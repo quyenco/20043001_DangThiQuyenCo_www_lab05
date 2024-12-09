@@ -13,10 +13,8 @@ import java.util.List;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
-//    @Query("SELECT j FROM Job j WHERE " +
-//            "LOWER(j.jobName) LIKE LOWER(CONCAT('%', :search, '%')) OR " +
-//            "LOWER(j.company.compName) LIKE LOWER(CONCAT('%', :search, '%'))")
-//    Page<Job> searchJobs(@Param("search") String search, Pageable pageable);
+
+
 
     @Query("SELECT j FROM Job j WHERE LOWER(j.jobName) LIKE LOWER(CONCAT('%', :search, '%'))")
     Page<Job> searchJobs(String search, Pageable pageable);
@@ -28,4 +26,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
     @EntityGraph(attributePaths = {"company"})
     @Override
     Page<Job> findAll(Pageable pageable);
+
+
+
 }

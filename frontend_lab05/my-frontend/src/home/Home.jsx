@@ -36,6 +36,7 @@ const Home = () => {
       
       setJobs(response.data.content || response.data);
       setTotalPages(response.data.totalPages || 0);
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
@@ -56,8 +57,7 @@ const Home = () => {
   };
 
   const handleViewDetail = (job) => {
-    // Điều hướng đến trang /job-detail và truyền thông tin job qua state
-    navigate("/job-detail", { state: { job: job } });
+    navigate("/job-detail", { state: { job, user } });
   };
 
   return (
@@ -86,7 +86,7 @@ const Home = () => {
             </Button>
           )}
         </Col>
-        <Col>
+        {/* <Col>
           <Form onSubmit={handleSearch} className="d-flex">
             <Form.Control  style={{ marginRight: "10px", height: "38px" }}
               type="text"
@@ -98,7 +98,7 @@ const Home = () => {
               Tìm kiếm
             </Button>
           </Form>
-        </Col>
+        </Col> */}
       </Row>
       <Row xs={1} md={2} lg={3} className="g-4">
         {jobs.map((job) => (
@@ -109,8 +109,8 @@ const Home = () => {
                 <Card.Text>
                   <b>Công ty:</b> {job.companyName || "N/A"}
                 </Card.Text>
-                <Card.Text>{job.jobDesc}</Card.Text>
-                <Button onClick={() => handleViewDetail(job.id)} >Chi tiết</Button>
+                <Card.Text>{job.title}</Card.Text>
+                <Button onClick={() => handleViewDetail(job)}>Chi tiết</Button>
               </Card.Body>
             </Card>
           </Col>

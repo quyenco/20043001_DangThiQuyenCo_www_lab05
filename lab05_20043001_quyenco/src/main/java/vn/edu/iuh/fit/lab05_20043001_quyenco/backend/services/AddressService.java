@@ -16,6 +16,10 @@ public class AddressService {
         return addressRepository.findAll();
     }
 
+    public Address getByCompany(Long companyId) {
+        return addressRepository.findByCompanyId(companyId);
+    }
+
     public boolean save(Address address) {
         return addressRepository.save(address) != null;
     }

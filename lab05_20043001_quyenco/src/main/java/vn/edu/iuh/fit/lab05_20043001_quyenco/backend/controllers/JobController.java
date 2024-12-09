@@ -7,13 +7,17 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.JobDetailDTO;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.JobResponse;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Address;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Job;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.repositories.CandidateSkillRepository;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.CandidateSkillService;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.JobService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,9 +45,7 @@ public class JobController {
                 return ResponseEntity.noContent().build();
             }
 
-            return ResponseEntity.ok(jobsBySkill.stream()
-                    .map(job -> new JobResponse(job.getId(), job.getJobName(),job.getJobDesc(),job.getCompany().getCompName()))  // Tạo JobResponse với id và jobName
-                    .toList());
+            return ResponseEntity.ok(jobsBySkill); // Trả về danh sách công việc cho candidate
         }
 
         if (search != null && !search.isEmpty()) {
@@ -52,9 +54,14 @@ public class JobController {
                 return ResponseEntity.noContent().build();
             }
 
-            return ResponseEntity.ok(searchResult.stream()
-                    .map(job -> new JobResponse(job.getId(), job.getJobName(),job.getJobDesc(),job.getCompany().getCompName()))  // Tạo JobResponse với id và jobName
-                    .toList());
+            Map<String, Object> response = new HashMap<>();
+            response.put("content", searchResult.getContent().stream()
+                    .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(), job.getCompany().getCompName()))
+                    .collect(Collectors.toList()));
+            response.put("totalPages", searchResult.getTotalPages());
+            response.put("totalElements", searchResult.getTotalElements());
+
+            return ResponseEntity.ok(response);
         }
 
         Page<Job> allJobs = jobService.getAllJobs(pageable);
@@ -62,12 +69,27 @@ public class JobController {
             return ResponseEntity.noContent().build();
         }
 
-        return ResponseEntity.ok(allJobs.stream()
-                .map(job -> new JobResponse(job.getId(), job.getJobName(),job.getJobDesc(),job.getCompany().getCompName()))  // Tạo JobResponse với id và jobName
-                .toList());
+        Map<String, Object> response = new HashMap<>();
+        response.put("content", allJobs.getContent().stream()
+                .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(), job.getCompany().getCompName()))
+                .collect(Collectors.toList()));
+        response.put("totalPages", allJobs.getTotalPages());
+        response.put("totalElements", allJobs.getTotalElements());
 
-
+        return ResponseEntity.ok(response);
     }
+
+
+
+    @GetMapping("/{jobId}")
+    public ResponseEntity<?> getJobDetail(@PathVariable Long jobId) {
+        JobDetailDTO jobDetail = jobService.getJobDetail(jobId);
+        if (jobDetail == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(jobDetail);
+    }
+
 
 }
 

@@ -1,10 +1,7 @@
 package vn.edu.iuh.fit.lab05_20043001_quyenco.backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Address;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.repositories.AddressRepository;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.AddressService;
@@ -21,5 +18,10 @@ public class AddressControllers {
     @GetMapping("/find")
     public List<Address> getAll() {
         return addressService.getAll();
+    }
+
+    @GetMapping("/find-by-company")
+    public Address getByCompany(@RequestParam Long companyId) {
+        return addressService.getByCompany(companyId);
     }
 }
