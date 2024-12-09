@@ -30,10 +30,10 @@ public class LoginController {
         }
         if (user instanceof Candidate) {
             Candidate candidate = (Candidate) user;
-            return ResponseEntity.ok(new LoginResponse("Candidate", candidate.getEmail(), candidate.getFullName()));
+            return ResponseEntity.ok(new LoginResponse("Candidate",candidate.getId(), candidate.getEmail(), candidate.getFullName()));
         } else if (user instanceof Company) {
             Company company = (Company) user;
-            return ResponseEntity.ok(new LoginResponse("Company", company.getEmail(), company.getCompName()));
+            return ResponseEntity.ok(new LoginResponse("Company",company.getId(), company.getEmail(), company.getCompName()));
         }
 
 

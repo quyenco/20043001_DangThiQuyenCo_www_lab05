@@ -17,4 +17,8 @@ public class CompanyService {
     public Page<Company> getAll(Pageable pageable) {
         return companyRepository.findAll(pageable); // Sử dụng phương thức phân trang của repository
     }
+
+    public Company getById(Long id) {
+        return companyRepository.findById(id).orElse(null); // Lấy ra một công ty theo id
+    }
 }

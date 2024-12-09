@@ -7,9 +7,8 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class LoginResponse {
-    private String userType;
-    private Long id;
-    private String email;
+public class SkillRequest {
     private String name;
+    private String desc;
+    private String type;
 }

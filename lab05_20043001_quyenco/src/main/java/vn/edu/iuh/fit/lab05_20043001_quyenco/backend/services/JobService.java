@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,8 +8,10 @@ import org.springframework.stereotype.Service;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.JobDetailDTO;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.SkillDTO;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Address;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Company;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Job;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.JobSkill;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.repositories.CompanyRepository;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.repositories.JobRepository;
 
 import java.util.List;
@@ -19,6 +22,9 @@ import java.util.stream.Collectors;
 public class JobService {
     @Autowired
     private JobRepository jobRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     public Page<Job> getAllJobs(Pageable pageable) {
         return jobRepository.findAll(pageable);
@@ -61,5 +67,12 @@ public class JobService {
         return skillDTO;
     }
 
+
+    public Job addJob(Long companyId, Job job) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with ID: " + companyId));
+        job.setCompany(company);
+        return jobRepository.save(job);
+    }
 
 }

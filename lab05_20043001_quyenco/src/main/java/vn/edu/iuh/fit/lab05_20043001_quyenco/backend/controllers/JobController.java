@@ -1,5 +1,6 @@
 package vn.edu.iuh.fit.lab05_20043001_quyenco.backend.controllers;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,9 +12,11 @@ import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.JobDetailDTO;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.dto.JobResponse;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Address;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.Job;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models.JobSkill;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.repositories.CandidateSkillRepository;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.CandidateSkillService;
 import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.JobService;
+import vn.edu.iuh.fit.lab05_20043001_quyenco.backend.services.JobSkillService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +32,9 @@ public class JobController {
 
     @Autowired
     private CandidateSkillRepository candidateSkillRepository;
+
+    @Autowired
+    private JobSkillService jobSkillService;
 
     @GetMapping("/get-page")
     public ResponseEntity<?> getJobs(@RequestParam int page,
@@ -56,7 +62,7 @@ public class JobController {
 
             Map<String, Object> response = new HashMap<>();
             response.put("content", searchResult.getContent().stream()
-                    .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(), job.getCompany().getCompName()))
+                    .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(),job.getCompany().getId(), job.getCompany().getCompName()))
                     .collect(Collectors.toList()));
             response.put("totalPages", searchResult.getTotalPages());
             response.put("totalElements", searchResult.getTotalElements());
@@ -71,7 +77,7 @@ public class JobController {
 
         Map<String, Object> response = new HashMap<>();
         response.put("content", allJobs.getContent().stream()
-                .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(), job.getCompany().getCompName()))
+                .map(job -> new JobResponse(job.getId(), job.getJobName(), job.getJobDesc(),job.getCompany().getId(), job.getCompany().getCompName()))
                 .collect(Collectors.toList()));
         response.put("totalPages", allJobs.getTotalPages());
         response.put("totalElements", allJobs.getTotalElements());
@@ -89,6 +95,34 @@ public class JobController {
         }
         return ResponseEntity.ok(jobDetail);
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Job> addJob(@RequestParam Long companyId, @RequestBody Job job) {
+        try {
+            // Thêm Job
+            Job createdJob = jobService.addJob(companyId, job);
+
+//            // Thêm JobSkill
+//            if (job.getJobSkills() != null) {
+//                for (JobSkill jobSkill : job.getJobSkills()) {
+////                    jobSkill.setJob(createdJob); // Gắn liên kết Job cho từng JobSkill
+//                    jobSkillService.addJobSkill(jobSkill); // Lưu JobSkill vào DB
+//
+//                }
+//            }
+
+            return new ResponseEntity<>(createdJob, HttpStatus.CREATED);
+        } catch (EntityNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            e.printStackTrace(); // Debug lỗi
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
+
+
 
 
 }

@@ -3,7 +3,9 @@ package vn.edu.iuh.fit.lab05_20043001_quyenco.backend.ids;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
 
@@ -13,6 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 @Embeddable
+@AllArgsConstructor
+@NoArgsConstructor
 public class CandidateSkillId implements Serializable {
     private long serialVersionUID ;
     @Column(name = "can_id", nullable = false)

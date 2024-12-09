@@ -1,5 +1,7 @@
 package vn.edu.iuh.fit.lab05_20043001_quyenco.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,7 @@ public class JobSkill {
     @MapsId("jobId")
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "job_id", nullable = false)
+    @JsonIgnore
     private Job job;
 
     @Column(name = "more_infos", length = 1000)
@@ -31,6 +34,7 @@ public class JobSkill {
     @MapsId("skillId")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "skill_id", nullable = false)
+    @JsonBackReference
     private  Skill skill;
 
 }

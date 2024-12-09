@@ -36,7 +36,7 @@ const Home = () => {
       
       setJobs(response.data.content || response.data);
       setTotalPages(response.data.totalPages || 0);
-      console.log(response.data);
+      
     } catch (error) {
       console.error("Error fetching jobs:", error);
     }
