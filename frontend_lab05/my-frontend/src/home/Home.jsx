@@ -31,9 +31,10 @@ const Home = () => {
       } else if (searchQuery) {
         params.search = searchQuery;
       }
+      console.log("params",params)
 
       const response = await axios.get("http://localhost:8080/api/jobs/get-page", { params });
-      
+      console.log(response.data);
       setJobs(response.data.content || response.data);
       setTotalPages(response.data.totalPages || 0);
       
@@ -59,24 +60,39 @@ const Home = () => {
   const handleViewDetail = (job) => {
     navigate("/job-detail", { state: { job, user } });
   };
+  
+
+  const handleUpdateProfile = () => {
+    // Kiểm tra loại người dùng và điều hướng tới trang cập nhật phù hợp
+    if (user && user.userType === 'Company') {
+      // Nếu người dùng là công ty, điều hướng đến trang cập nhật công ty
+      navigate('/updateCompany');
+    } else if (user && user.userType === 'Candidate') {
+      // Nếu người dùng là ứng viên, điều hướng đến trang cập nhật ứng viên
+      navigate('/updateCandidate');
+    }
+  };
 
   return (
     
     <Container className="home-container mt-5">
-      {/* Hiển thị thông tin người dùng ở góc trên bên phải */}
       <Row className="mb-4 align-items-center">
-        <Col>
-          {user && (
-            <div className="d-flex justify-content-end">
-              <FaUser style={{ fontSize: "24px", marginRight:"5px" }} />
-              <span style={{ fontSize: "18px", fontWeight: "bold", marginRight: "10px" }}>
-                  {user.name}
-              </span>
-              <i className="fa-solid fa-user-circle" style={{ fontSize: "24px" }}></i>
-            </div>
-          )}
-        </Col>
-      </Row>
+      <Col>
+        {user && (
+          <div className="d-flex justify-content-end">
+            
+            <button
+              onClick={handleUpdateProfile} // Gọi hàm khi nhấn nút
+              style={{ fontSize: "18px", fontWeight: "bold", background: "none", border: "none", cursor: "pointer" }}
+            >
+              <FaUser style={{ fontSize: "24px", marginRight: "5px" }} />
+              {user.name}
+            </button>
+            <i className="fa-solid fa-user-circle" style={{ fontSize: "24px" }}></i>
+          </div>
+        )}
+      </Col>
+    </Row>
 
       <Row className="mb-4">
         <Col>

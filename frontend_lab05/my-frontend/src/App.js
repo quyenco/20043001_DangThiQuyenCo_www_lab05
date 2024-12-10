@@ -5,6 +5,8 @@ import Login from "./login/Login";
 import Register from "./login/Register";
 import JobDetail from "./jobDetail/JobDetail";
 import PostJob from "./postJob/PostJob";
+import UpdateCompany from "./update/UpdateCompany";
+import UpdateCandidate from "./update/UpdateCandidate";
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/job-detail" element={<JobDetail />} />
         <Route path="/sign-up" element={<Register />} />
         <Route path="/post-job" element={<PostJob />} />
+        <Route path="/updateCompany" element={<UpdateCompany />} />
+        <Route path="/updateCandidate" element={<UpdateCandidate />} />
       </Routes>
     </BrowserRouter>
   );
