@@ -66,10 +66,10 @@ const Home = () => {
     // Kiểm tra loại người dùng và điều hướng tới trang cập nhật phù hợp
     if (user && user.userType === 'Company') {
       // Nếu người dùng là công ty, điều hướng đến trang cập nhật công ty
-      navigate('/updateCompany');
+      navigate("/updateCompany", { state: { user } });
     } else if (user && user.userType === 'Candidate') {
       // Nếu người dùng là ứng viên, điều hướng đến trang cập nhật ứng viên
-      navigate('/updateCandidate');
+      navigate("/updateCandidate", { state: { user } });
     }
   };
 

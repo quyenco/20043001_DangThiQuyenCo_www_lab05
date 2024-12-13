@@ -35,8 +35,8 @@ public class Address {
     private String zipcode;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "address")
-    private List<Candidate> candidates;
+    @OneToOne(mappedBy = "address")
+    private Candidate candidate;
 
     @JsonIgnore
     @OneToOne(mappedBy = "address")

@@ -145,13 +145,6 @@ const PostJob = () => {
           });
       });
 
-
-
-
-
-
-
-  
       // Xử lý kết quả từ response
       if (response.status === 200) {
         setMessage("Công việc đã được đăng thành công!");
@@ -235,7 +228,7 @@ const PostJob = () => {
               <thead>
                 <tr>
                   <th>Tên kỹ năng</th>
-                  <th>Chọn loại kỹ năng</th>
+                  <th>Cấp độ kỹ năng</th>
                   <th>Thêm thông tin</th>
                   <th>Xóa</th>
                 </tr>

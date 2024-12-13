@@ -35,8 +35,8 @@ public class Candidate {
     private String phone;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "address")
+    @OneToOne(fetch = FetchType.LAZY, optional = true)
+    @JoinColumn(name = "address", nullable = false)
     private Address address = new Address(1L, "chua co dia chi");
 
     @OneToMany(mappedBy = "can")

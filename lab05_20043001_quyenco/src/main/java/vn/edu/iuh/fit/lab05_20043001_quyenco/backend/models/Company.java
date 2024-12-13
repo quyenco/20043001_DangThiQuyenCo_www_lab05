@@ -21,7 +21,7 @@ public class Company {
     @Column(name = "comp_id", nullable = false)
     private Long id;
 
-    @Column(name = "about", length = 2000)
+    @Column(name = "about", length = 2000, nullable = true)
     private String about;
 
     @Column(name = "email", nullable = true)
@@ -33,11 +33,11 @@ public class Company {
     @Column(name = "phone", nullable = true)
     private String phone;
 
-    @Column(name = "web_url")
+    @Column(name = "web_url", nullable = true)
     private String webUrl;
 
     @JsonIgnore
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @OneToOne(fetch = FetchType.LAZY,  optional = true)
     @JoinColumn(name = "address", nullable = false)
     private Address address = new Address(1L, "chua co dia chi");
 

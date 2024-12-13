@@ -1,36 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation} from 'react-router-dom';
+import { FaUser } from "react-icons/fa";
+
 
 const UpdateCandidate = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.user) {
+      setUser(location.state.user); 
+    }
+  }, [location.state]);
+  console.log("user",user)
+
   const [candidate, setCandidate] = useState({
     fullName: '',
     email: '',
     phone: '',
     dob: '',
-    address: {
-      street: '',
-      city: '',
-      zipCode: '',
-    },
+  });
+  const [address, setAddress] = useState({
+    street: '',
+    city: '',
+    zipcode: '',
   });
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const candidateId = location.state.user.id;
+
   useEffect(() => {
-    // Load the current candidate information (you should have the candidate id available)
-    const candidateId = 1; // This should be passed as a prop or fetched from the logged-in user
     axios
-      .get(`http://localhost:8080/api/candidates/${candidateId}`)
+      .get(`http://localhost:8080/api/candidate/${candidateId}`)
       .then((response) => {
         setCandidate(response.data);
+
+        axios
+          .get(`http://localhost:8080/api/address/find-by-candidate?candidateId=${candidateId}`)
+          .then((addressResponse) => {
+            setAddress(addressResponse.data); // Cập nhật thông tin địa chỉ
+            console.log('Address data:', addressResponse.data);
+          })
+          .catch((addressError) => {
+            console.error('Error fetching address data:', addressError);
+            setMessage('Không thể tải thông tin địa chỉ');
+          });
       })
       .catch((error) => {
         console.error('Error fetching candidate data:', error);
         setMessage('Không thể tải thông tin ứng viên');
       });
-  }, []);
+  }, [candidateId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,25 +65,37 @@ const UpdateCandidate = () => {
 
   const handleAddressChange = (e) => {
     const { name, value } = e.target;
-    setCandidate((prevCandidate) => ({
-      ...prevCandidate,
-      address: {
-        ...prevCandidate.address,
+    setAddress((prevAddress) => ({
+      ...prevAddress,
         [name]: value,
-      },
     }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
-    const candidateId = 1; // Replace with the actual candidate ID
+    setLoading(true); // Replace with the actual candidate ID
 
     axios
-      .put(`http://localhost:8080/api/candidates/${candidateId}`, candidate)
-      .then((response) => {
-        setMessage('Cập nhật thông tin ứng viên thành công!');
-        setLoading(false);
+      .put(`http://localhost:8080/api/candidate/${candidateId}`, {
+        fullName: candidate.fullName,
+        email: candidate.email,
+        phone: candidate.phone,
+        dob: candidate.dob,
+      })
+      .then(() => {
+        // Update address information
+        console.log('Address:', address.id);
+        axios
+          .put(`http://localhost:8080/api/address/${address.id}`, address)
+          .then(() => {
+            setMessage('Cập nhật thông tin công ty thành công!');
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error('Error updating address:', error);
+            setMessage('Đã xảy ra lỗi khi cập nhật thông tin địa chỉ.');
+            setLoading(false);
+          });
       })
       .catch((error) => {
         console.error('Error updating candidate:', error);
@@ -71,6 +106,22 @@ const UpdateCandidate = () => {
 
   return (
     <div className="container mt-5">
+
+      <div style={{ position: 'absolute', top: '10px', right: '10px' }}>
+        {user && (
+            <div className="d-flex justify-content-end">
+              <FaUser style={{ fontSize: "24px", marginRight:"5px" }} />
+              <span style={{ fontSize: "18px", fontWeight: "bold", marginRight: "10px" }}>
+                  {user.name}
+              </span>
+              <i className="fa-solid fa-user-circle" style={{ fontSize: "24px" }}></i>
+            </div>
+          )}
+
+
+
+      </div>
+
       <h2>Cập nhật thông tin ứng viên</h2>
       {message && <div className="alert alert-info">{message}</div>}
 
@@ -134,7 +185,7 @@ const UpdateCandidate = () => {
             className="form-control"
             id="street"
             name="street"
-            value={candidate.address.street}
+            value={address.street||''}
             onChange={handleAddressChange}
           />
         </div>
@@ -146,7 +197,7 @@ const UpdateCandidate = () => {
             className="form-control"
             id="city"
             name="city"
-            value={candidate.address.city}
+            value={address.city || ''}
             onChange={handleAddressChange}
           />
         </div>
@@ -158,7 +209,7 @@ const UpdateCandidate = () => {
             className="form-control"
             id="zipCode"
             name="zipCode"
-            value={candidate.address.zipCode}
+            value={address.zipcode||''}
             onChange={handleAddressChange}
           />
         </div>

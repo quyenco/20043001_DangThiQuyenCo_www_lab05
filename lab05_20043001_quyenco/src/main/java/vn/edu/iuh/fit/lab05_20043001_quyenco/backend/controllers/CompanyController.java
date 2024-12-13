@@ -37,4 +37,27 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getCompanyById(@PathVariable Long id) {
+        try {
+            Company company = companyService.getById(id);
+            return ResponseEntity.ok(company);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching company details: " + e.getMessage());
+        }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company updatedCompany) {
+        try {
+            Company company = companyService.updateCompany(id, updatedCompany);
+            return ResponseEntity.ok(company);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error updating company: " + e.getMessage());
+        }
+    }
 }

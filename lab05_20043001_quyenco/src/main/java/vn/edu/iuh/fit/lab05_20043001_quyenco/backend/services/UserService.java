@@ -47,20 +47,20 @@ public class UserService {
         return null;
     }
 
-    public String registerUser(RegisterRequest registerRequest) {
-        if (registerRequest.getUserType().equals("candidate")) {
-            Candidate candidate = new Candidate();
-            candidate.setEmail(registerRequest.getEmail());
-            candidate.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-            candidateRepository.save(candidate);
-        } else if (registerRequest.getUserType().equals("company")) {
-            Company company = new Company();
-            company.setEmail(registerRequest.getEmail());
-            company.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-            companyRepository.save(company);
-        } else {
-            return "Invalid user type";
-        }
-        return "Registration successful!";
-    }
+//    public String registerUser(RegisterRequest registerRequest) {
+//        if (registerRequest.getUserType().equals("candidate")) {
+//            Candidate candidate = new Candidate();
+//            candidate.setEmail(registerRequest.getEmail());
+//            candidate.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+//            candidateRepository.save(candidate);
+//        } else if (registerRequest.getUserType().equals("company")) {
+//            Company company = new Company();
+//            company.setEmail(registerRequest.getEmail());
+//            company.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+//            companyRepository.save(company);
+//        } else {
+//            return "Invalid user type";
+//        }
+//        return "Registration successful!";
+//    }
 }
