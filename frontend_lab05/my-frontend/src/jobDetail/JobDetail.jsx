@@ -104,11 +104,11 @@ const JobDetail = () => {
             borderRadius: "5px", // Thêm bo góc cho từng kỹ năng
             boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)", // Thêm bóng cho kỹ năng
           }}>
-            <span className=""><b>Tên kỹ năng:</b> {skill.skillName || "N/A"}</span><br />
-            <span className=""><b>Loại kỹ năng:</b> {skill.type || "N/A"}</span><br />
-            <span className=""><b>Cấp độ:</b> {skill.level || "N/A"}</span><br />
-            <span className=""><b>Mô tả:</b> {skill.description || "N/A"}</span><br />
-            <span className=""><b>Thông tin thêm:</b> {skill.additionalInfo || "N/A"}</span><br />
+            <span className=""><b>Tên kỹ năng:</b> {skill.skillName || ""}</span><br />
+            <span className=""><b>Loại kỹ năng:</b> {skill.type || ""}</span><br />
+            <span className=""><b>Cấp độ:</b> {skill.level || ""}</span><br />
+            <span className=""><b>Mô tả:</b> {skill.description || ""}</span><br />
+            <span className=""><b>Thông tin thêm:</b> {skill.additionalInfo || ""}</span><br />
           </div>
         ))}
       </div>
