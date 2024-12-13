@@ -27,6 +27,9 @@ Giao diện đăng ký: tạo tài khoản Candidate hoặc Company bằng email
 Giao diện Home: khi đăng nhập thành công sẽ hiển thị trang chứa các công việc đã được đăng, nếu company đăng nhập thì sẽ hiển thị 1 button đăng tin tuyển dụng.
  ![image](https://github.com/user-attachments/assets/d641b993-0fcd-4d4a-8291-2c52ae74a753)
 
+ Trang chi tiết tin tuyển dụng: Nhấp vào chi tiết sẽ hiển thị thông tin của công việc
+ ![image](https://github.com/user-attachments/assets/9667c35e-b1e6-42d5-83f7-9564f2edecf8)
+
 Trang đăng tin tuyển dụng: tạo 1 tin tuyển dụng với các thông tin: tên công việc, mô tả công việc, có thể chọn 0 hoặc nhiều kỹ năng dựa trên các kỹ năng có sẵn, ngoài ra có nút thêm kỹ năng mới. Sau khi chọn cấp độ kỹ năng, hoặc xóa kỹ năng đã chọn.
  ![image](https://github.com/user-attachments/assets/cfb99571-a359-49e8-8320-7dc358fd35d2)
 
